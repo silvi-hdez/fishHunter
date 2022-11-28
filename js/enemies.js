@@ -1,0 +1,3 @@
+class Enemies {
+    constructor (ctx)
+}
