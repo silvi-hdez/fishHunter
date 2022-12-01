@@ -3,8 +3,8 @@ class Player {
         this.ctx = ctx
         this.x = x
         this.y = y
-        this.width = 100
-        this.height = 60
+        this.width = 70
+        this.height = 40
 
         this.horizontalFrames = 3
         this.verticalFrames = 1
@@ -19,7 +19,7 @@ class Player {
         }
 
        
-        this.gravity = 0.05
+        this.gravity = 0.1
     
         this.speedY = 0
 
@@ -39,13 +39,16 @@ class Player {
                 this.y, 
                 this.width, 
                 this.height)
-            
         }
+        
     }
 
     move () {
         this.speedY += this.gravity
         this.y += this.speedY
+
+        // this.speedY = this.gravity
+        // this.y = this.speedY
 
         if (this.y > this.ctx.canvas.height - this.height) {
             this.y = this.ctx.canvas.height - this.height
@@ -58,11 +61,28 @@ class Player {
     }
 
     onKeyUp (event) {
-        console.log ('hi')
-        if (event.keyCode === 38) {
+        
+        if (event.keyCode === 38 || event.keyCode === 32) {
             this.isSwimming = true
             this.speedY = -3
         }
     }
+
+    onKeyDown (event) {
+        
+        if (event.keyCode === 40) {
+            this.isSwimming = true
+            this.speedY = 6
+        }
+    }
+
+    isColliding(obj) {
+       
+		return this.x < obj.x + obj.width
+		 && this.x + this.width > obj.x
+		 && this.y < obj.y + obj.height
+		 && this.y + this.height > obj.y;
+	}
+
 
 }
