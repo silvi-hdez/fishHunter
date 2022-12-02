@@ -1,3 +1,18 @@
 canvas {
     border: 1px solid red
 }
+
+#game-controls {
+	display: flex;
+	justify-content: center;
+}
+
+#game-controls button {
+	margin: 10px 5px;
+	font-size: 16px;
+	color: #2e2e2e;
+	text-align: center;
+	padding: 10px;
+	border: 1px solid #ccc;
+	background-color: #eee;
+}

@@ -1,9 +1,19 @@
 const game = new Game('canvas-game')
+const startBtn = document.getElementById('start-btn')
 
-window.onload = function () {
-    game.start ()
-}
+// window.onload = function () {
+//     game.start ()
+// }
 
-document.addEventListener ('keyup', function (event) {
-    game.onKeyUp(event)
-})
+startBtn.addEventListener('click', () => {
+	game.start();
+});
+
+
+document.addEventListener('keydown', function(event) {
+	game.onKeyDown(event);
+});
+
+document.addEventListener('keyup', function(event) {
+	game.onKeyUp(event);
+});

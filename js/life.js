@@ -1,21 +1,30 @@
 class Life {
-    constructor (ctx, x, y, width, type) {
+    constructor (ctx, x, y, width) {
         this.ctx = ctx
         this.x = x
         this.y = y
         this.width = width
         this.height = 0
-        this.type = type
-        this.isOnSea = false;
-        this.isVisible = true; // is replicable
+       
+        // this.isOnSea = false;
+        // this.isVisible = true; // is replicable
 
         this.img = new Image()
-        this.imgSrc = {
-            life1: './images/life1.png',
-            life2: './images/life2.png',
-        }
+        this.imgSrc = [
+            './images/life1.png',
+            './images/life2.png'
+        ]
 
-        this.img.src = this.imgSrc[this.type]
+        //  this.imgSrc = [
+        //     {image: './images/life1.png',
+        //     score: 1,
+        //  },
+        //     {image:  './images/life2.png',
+        //     score: 2,
+        // }
+        // ]
+
+        this.img.src = this.imgSrc[Math.floor(Math.random() * this.imgSrc.length)]
         this.isReady = false
         this.img.onload = () => {
             this.isReady = true

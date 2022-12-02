@@ -19,12 +19,17 @@ class Player {
         }
 
        
-        this.gravity = 0.1
-    
-        this.speedY = 0
+       // this.gravity = 0.1
+       // this.speedY = 0
+
+       this.gravity = 0.05;
+	    this.vy = 0;
 
 
-        this.isSwimming = false
+        this.movements = {
+			up: false,
+			down: false
+		};
     }
 
     draw () {
@@ -44,37 +49,39 @@ class Player {
     }
 
     move () {
-        this.speedY += this.gravity
-        this.y += this.speedY
-
-        // this.speedY = this.gravity
-        // this.y = this.speedY
+       this.vy += this.gravity;
+		this.y += this.vy;
 
         if (this.y > this.ctx.canvas.height - this.height) {
-            this.y = this.ctx.canvas.height - this.height
-        }
+			this.y = this.ctx.canvas.height - this.height
+		}
 
-        if (this.y < 0) {
+        if (this.y<=0) {
             this.y = 0
         }
-        
     }
 
-    onKeyUp (event) {
-        
-        if (event.keyCode === 38 || event.keyCode === 32) {
-            this.isSwimming = true
-            this.speedY = -3
-        }
+
+    onKeyDown (e) {
+        if (e.keyCode === 38) {
+			this.movements.up = true;
+			this.vy = -3;
+		}
+		if (e.keyCode === 40) {
+			this.movements.down = true;
+            this.vy = 3
+		}
     }
 
-    onKeyDown (event) {
-        
-        if (event.keyCode === 40) {
-            this.isSwimming = true
-            this.speedY = 6
-        }
+    onKeyUp (e) {  
+        if (e.keyCode === 38 ){
+			this.movements.up = false;
+		}
+        if (e.keyCode === 40 ){
+			this.movements.down = false;
+		}
     }
+
 
     isColliding(obj) {
        

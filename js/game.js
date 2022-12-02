@@ -8,15 +8,7 @@ class Game {
         this.player = new Player (this.ctx, 200, 70)
         this.enemies = []
 
-        this.lives = [
-            new Life (this.ctx, 400, 30, 50, 'life1'),
-            new Life (this.ctx, 600, 100, 50, 'life2'),
-            new Life (this.ctx, 800, 300, 30, 'life2'),
-            new Life (this.ctx, 900, 100, 50, 'life1'),
-            new Life (this.ctx, 1100, 100, 20, 'life1'),
-            new Life (this.ctx, 1250, 350, 50, 'life2'),
-            new Life (this.ctx, 1400, 100, 50, 'life2'),
-        ]
+        this.lives = []
 
         this.score = 0
         this.tick = 0
@@ -32,6 +24,7 @@ class Game {
             this.tick++;
             if(this.tick % 90 === 0) {
                 this.addEnemy();
+                this.addLife();
                 this.tick = 0;
             }
         }, 1000/60)
@@ -54,9 +47,13 @@ class Game {
         this.lives.forEach(life => life.move())
     }
 
-    onKeyUp (event) {
-        this.player.onKeyUp (event)
-    }
+    onKeyDown(e) {
+		this.player.onKeyDown(e);
+	}
+
+    onKeyUp(e) {
+		this.player.onKeyUp(e);
+	}
 
     checkCollisions() {
 		if (this.enemies.some(enemy => 
@@ -68,11 +65,11 @@ class Game {
 		if (lifeCollision) {
            
 			this.lives.splice(this.lives.indexOf(lifeCollision), 1)
-                this.score++
-                if (lifeCollision.type === 'life1') {
+              
+                if (lifeCollision.score.life1) {
                     this.score += lifeCollision.score.life1
                 } 
-                else if (lifeCollision.type === 'life2') {
+                else if (lifeCollision.score.life2) {
                     this.score += lifeCollision.score.life2
                 } 
 	        }
@@ -112,13 +109,22 @@ class Game {
 
     addEnemy() {
         console.log (this.enemies)
-        const randomWidth = Math.random() * 100 + 50
+       const randomWidth = Math.random() * (120-80) + 80
         const randomY = Math.random() * (this.canvas.height)
-        this.enemies.push(new Enemy (this.ctx, this.ctx.canvas.width, randomY, randomWidth));
+        const randomX = Math.random() * (1200 - this.canvas.width) + this.canvas.width
+        this.enemies.push(new Enemy (this.ctx, randomX, randomY, randomWidth));
+    }
+
+    addLife () {
+        const randomWidth = Math.random() * (50-20) + 20
+        const randomY = Math.random() * (this.canvas.height)
+        const randomX = Math.random() * (1200 - this.canvas.width) + this.canvas.width
+        this.lives.push(new Life (this.ctx, randomX, randomY, randomWidth));
     }
 
     clear () {
         this.ctx.clearRect (0, 0, this.canvas.width, this.canvas.height)
-        this.enemies = this.enemies.filter(enemy => enemy.y < this.canvas.height);
+       // this.enemies = this.enemies.filter(enemy => enemy.x < this.canvas.width);
+        //this.lives = this.lives.filter(life => life.x > this.canvas.width);
     }
 }
