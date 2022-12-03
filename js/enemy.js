@@ -8,8 +8,14 @@ class Enemy {
 
     this.types = [
       {
+        imageSrc: "./images/goldfish_life.png",
+        playerImageSrc: "./images/YellowFish.png",
+        score: 1,
+        level: 0,
+      },
+      {
         imageSrc: "./images/goldFish_enemy.png",
-        playerImageSrc: "./images/tuna.png",
+        playerImageSrc: "./images/tunafish.png",
         score: 1,
         level: 1,
       },

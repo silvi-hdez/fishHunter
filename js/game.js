@@ -132,11 +132,9 @@ class Game {
         if (fish.level > 0) {
             this.player.img.src = fish.playerImageSrc;
         } else if (this.player.level <= 1) {
-            console.log('entroooo')
             this.player.img.src = "./images/goldfishes.png";
             this.player.level += 1;
         }
     }
-    console.log(this.player.level)
   }
 }
