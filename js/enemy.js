@@ -1,45 +1,64 @@
 class Enemy {
-    constructor (ctx, x, y, width) {
-        this.ctx = ctx
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = 0;
-        this.isOnSea = false;
-        this.isVisible = true; // is replicable
+  constructor(ctx, x, y, width, type) {
+    this.ctx = ctx;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = 0;
 
+    this.types = [
+      {
+        imageSrc: "./images/goldFish_enemy.png",
+        playerImageSrc: "./images/tuna.png",
+        score: 1,
+        level: 1,
+      },
+      {
+        imageSrc: "./images/tunafish_enemy.png",
+        playerImageSrc: "./images/scaryFishes.png",
+        score: 1,
+        level: 2,
+      },
 
-        this.img = new Image ()
-        this.imgSrc = [
-            './images/tunafish_enemy.png',
-            './images/goldFish_enemy.png',
-            './images/scaryFish_enemy.png',
-            './images/shark_enemy.png'
-        ]
+      {
+        imageSrc: "./images/scaryFish_enemy.png",
+        playerImageSrc: "./images/sharks.png",
+        score: 1,
+        level: 3,
+      },
+      {
+        imageSrc: "./images/shark_enemy.png",
+        playerImageSrc: "./images/shark_enemy.png",
+        score: 1,
+        level: 4,
+      },
+    ];
 
-        this.img.src = this.imgSrc[Math.floor(Math.random() * this.imgSrc.length)]
-        this.isReady = false
-        this.img.onload = () => {
-            this.isReady = true
-            this.height = this.width * this.img.height / this.img.width;
-        }
+    this.type = type;
+    this.level = this.types[this.type].level;
+    this.score = this.types[this.type].score;
+    this.playerImageSrc = this.types[this.type].playerImageSrc;
+    this.img = new Image();
 
-      
-        this.speed = -3
+    this.img.src = this.types[this.type].imageSrc;
+    this.isReady = false;
+    this.img.onload = () => {
+      this.isReady = true;
+      this.height = (this.width * this.img.height) / this.img.width;
+    };
+
+    this.speed = -3;
+  }
+
+  draw() {
+    if (this.isReady) {
+      this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
+  }
 
-    draw () {
-        // if (this.x < this.ctx.canvas.width / 2 &&  !this.isOnSea &&  this.isVisible) {
-        //     this.isOnSea = true
-        // }
-        if (this.isReady) {
-            this.ctx.drawImage (this.img, this.x, this.y, this.width, this.height)
-        }
+  move() {
+    if (this.isReady) {
+      this.x += this.speed;
     }
-
-    move () {
-        if (this.isReady) {
-            this.x += this.speed
-        }
-    }
+  }
 }

@@ -6,26 +6,23 @@ class Life {
     this.width = width;
     this.height = 0;
 
-    this.types = {
-      1: {
+    this.types = [
+      {
         imageSrc: "./images/life1.png",
         score: 1,
+        level: 0
       },
-      2: {
+      {
         imageSrc: "./images/life2.png",
         score: 2,
+        level: 0
       },
-    };
+    ];
 
     this.type = type;
-    // this.isOnSea = false;
-    // this.isVisible = true; // is replicable
+
 
     this.img = new Image();
-    // this.imgSrc = [
-    //     './images/life1.png',
-    //     './images/life2.png'
-    // ]
 
     this.score = this.types[this.type].score;
     this.img.src = this.types[this.type].imageSrc;
