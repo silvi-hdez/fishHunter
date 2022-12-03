@@ -1,9 +1,7 @@
 const game = new Game('canvas-game')
 const startBtn = document.getElementById('start-btn')
 
-// window.onload = function () {
-//     game.start ()
-// }
+
 
 startBtn.addEventListener('click', () => {
 	game.start();

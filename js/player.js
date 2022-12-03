@@ -3,8 +3,10 @@ class Player {
         this.ctx = ctx
         this.x = x
         this.y = y
-        this.width = 70
+        this.width = 70 
         this.height = 40
+        this.sizeX = this.width
+        this.sizeY = this.height
 
         this.horizontalFrames = 3
         this.verticalFrames = 1
@@ -63,7 +65,9 @@ class Player {
 
 
     onKeyDown (e) {
-        if (e.keyCode === 38) {
+      
+        if (e.keyCode === 38 || e.keyCode === 32) {
+            e.preventDefault()
 			this.movements.up = true;
 			this.vy = -3;
 		}
