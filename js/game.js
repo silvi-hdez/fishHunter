@@ -78,6 +78,14 @@ class Game {
 
   gameOver() {
     clearInterval(this.intervalId);
+
+    this.ctx.save()
+    document.getElementById('game-over').style.display = 'flex';
+    
+    this.isGameOver = true;
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+
   }
 
   drawScore() {
