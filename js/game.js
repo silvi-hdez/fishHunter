@@ -21,7 +21,7 @@ class Game {
       this.draw();
       this.move();
       this.checkCollisions();
-      // this.replyLevel()
+      
       this.tick++;
       if (this.tick % 90 === 0) {
         this.addEnemy();
@@ -37,7 +37,7 @@ class Game {
     this.enemies.forEach((enemy) => enemy.draw());
     this.lives.forEach((life) => life.draw());
     this.drawScore();
-    this.drawLevel ()
+   
   }
 
   move() {
@@ -80,24 +80,18 @@ class Game {
     clearInterval(this.intervalId);
 
     this.ctx.save()
-    document.getElementById('game-over').style.display = 'flex';
-    
+    document.getElementById('game-over').style.display = 'flex';   
     this.isGameOver = true;
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
-
   }
 
   drawScore() {
     this.ctx.fillStyle = "red";
     this.ctx.font = "24px Arial";
-    this.ctx.fillText("Score: " + this.score, 10, 30);
-  }
-
-  drawLevel () {
-    this.ctx.fillStyle = "red";
-    this.ctx.font = "24px Arial";
-    this.ctx.fillText("Level: " + this.player.level, 10, 60);
+    this.ctx.fillText("Level: " + this.player.level, 400, 30);
+    this.ctx.fillText("Score: " + this.score, 500, 30);
+    
   }
 
   addEnemy() {

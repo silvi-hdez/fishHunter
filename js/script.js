@@ -3,13 +3,13 @@ const startBtn = document.getElementById('start-btn')
 const imgTittle = document.getElementById ('main-tittle')
 const gameOver = document.getElementById ('game-over')
 const restartBtn = document.getElementById('restart')
+const skipBtn = document.getElementById ('skip-btn')
 
 startBtn.addEventListener('click', () => {
 	game.start();
 	imgTittle.remove()
 	startBtn.remove()
-	restartBtn.classList.remove("hidden")
-	
+	skipBtn.style.display = 'flex'
 });
 
 
@@ -22,6 +22,10 @@ document.addEventListener('keyup', function(event) {
 });
 
 restartBtn.onclick = function() {
+	window.location.reload()
+}
+
+skipBtn.onclick = function() {
 	window.location.reload()
 }
 
