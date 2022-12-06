@@ -4,14 +4,12 @@ const imgTittle = document.getElementById ('main-tittle')
 const gameOver = document.getElementById ('game-over')
 const restartBtn = document.getElementById('restart')
 const skipBtn = document.getElementById ('skip-btn')
-//const pauseBtn = document.getElementById ('pause-btn')
 
 startBtn.addEventListener('click', () => {
 	game.start();
 	imgTittle.remove()
 	startBtn.remove()
 	skipBtn.style.display = 'flex'
-	//pauseBtn.style.display = 'flex'
 });
 
 
@@ -30,7 +28,3 @@ restartBtn.onclick = function() {
 skipBtn.onclick = function() {
 	window.location.reload()
 }
-
-// pauseBtn.onclick = function() {
-// 	window.location.pause()
-// }

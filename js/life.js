@@ -5,6 +5,7 @@ class Life {
     this.y = y;
     this.height = height;
     this.width = 0;
+    this.type = type;
 
     this.horizontalFrames = 3;
     this.verticalFrames = 1;
@@ -50,9 +51,8 @@ class Life {
       },
     ];
 
-    this.type = type;
+    
     this.img = new Image();
-
     this.img.src = this.types[this.type].imageSrc;
     this.isReady = false;
     this.img.onload = () => {
@@ -69,7 +69,6 @@ class Life {
   }
 
   draw() {
-    console.log('entro')
     if (this.isReady) {
       this.ctx.drawImage(
         this.img,
@@ -89,8 +88,6 @@ class Life {
   move() {
     this.x += this.speed;
 
-    // if (this.x + this.ctx.canvas.width <= 0) {
-    //   this.x = 0;
     if (this.tick % 10 === 0) {
       this.xFrame += 1;
     }

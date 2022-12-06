@@ -4,12 +4,11 @@ class Player {
     this.x = x;
     this.y = y;
     this.height = height;
-    
 
     this.sizeX = this.width;
     this.sizeY = this.height;
 
-    this.width = 0
+    this.width = 0;
 
     this.horizontalFrames = 3;
     this.verticalFrames = 1;
@@ -21,7 +20,10 @@ class Player {
     this.isReady = false;
     this.img.onload = () => {
       this.isReady = true;
-      this.width = ((this.height * this.img.width) / this.img.height)/this.horizontalFrames;
+      this.width =
+        (this.height * this.img.width) /
+        this.img.height /
+        this.horizontalFrames;
     };
 
     this.gravity = 0.05;
@@ -32,8 +34,8 @@ class Player {
       down: false,
     };
 
-   this.level = 0
-   
+    this.level = 0;
+
     this.tick = 0;
   }
 
@@ -59,12 +61,14 @@ class Player {
     this.y += this.vy;
 
     if (this.tick % 10 === 0) {
-     this.xFrame += 1;}
-    
+      this.xFrame += 1;
+    }
+
     if (this.xFrame > 1) {
-         this.xFrame = 0;
-         }
-    
+      this.xFrame = 0;
+    }
+
+    //--Área de movimiento----
 
     if (this.y > this.ctx.canvas.height - this.height) {
       this.y = this.ctx.canvas.height - this.height;
@@ -74,6 +78,8 @@ class Player {
       this.y = 0;
     }
   }
+
+  //--Controladores----
 
   onKeyDown(e) {
     if (e.keyCode === 38 || e.keyCode === 32) {
@@ -96,10 +102,11 @@ class Player {
     }
   }
 
+  //--Colisiones----
   isColliding(obj) {
-    const threshold = 25
+    const threshold = 25;
     return (
-      this.x + threshold< obj.x + obj.width &&
+      this.x + threshold < obj.x + obj.width &&
       this.x + this.width > obj.x + threshold &&
       this.y + threshold < obj.y + obj.height &&
       this.y + this.height > obj.y + threshold
