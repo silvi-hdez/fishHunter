@@ -1,51 +1,102 @@
 class Life {
-  constructor(ctx, x, y, width, type) {
+  constructor(ctx, x, y, height, type) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = 0;
+    this.height = height;
+    this.width = 0;
+
+    this.horizontalFrames = 3;
+    this.verticalFrames = 1;
+    this.xFrame = 0;
+    this.yFrame = 0;
 
     this.types = [
       {
-        imageSrc: "./images/life1.png",
+        name: "shrimp",
+        imageSrc: "./images/L00_foodfish.png",
         score: 1,
-        level: 0
+        level: 0,
       },
       {
-        imageSrc: "./images/life2.png",
+        name: "star",
+        imageSrc: "./images/L00_fruitfish.png",
+        score: 1,
+        level: 0,
+      },
+      {
+        name: "prawn",
+        imageSrc: "./images/L00_shrimp.png",
+        score: 1,
+        level: 0,
+      },
+      {
+        name: "crab",
+        imageSrc: "./images/L01_hermitcrab.png",
         score: 2,
-        level: 0
+        level: 1,
+      },
+      {
+        name: "sea snail",
+        imageSrc: "./images/L01_nautilus.png",
+        score: 2,
+        level: 1,
+      },
+      {
+        name: "sea horse",
+        imageSrc: "./images/L01_seahorse.png",
+        score: 2,
+        level: 1,
       },
     ];
 
     this.type = type;
-
-
     this.img = new Image();
 
-    this.score = this.types[this.type].score;
     this.img.src = this.types[this.type].imageSrc;
     this.isReady = false;
     this.img.onload = () => {
       this.isReady = true;
-      this.height = (this.width * this.img.height) / this.img.width;
+      this.width =
+       ((this.height * this.img.width) /
+        this.img.height) /
+        this.horizontalFrames;
     };
 
     this.speed = -3;
+    this.score = this.types[this.type].score;
+    this.tick = 0;
   }
 
   draw() {
+    console.log('entro')
     if (this.isReady) {
-      this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+      this.ctx.drawImage(
+        this.img,
+        (this.img.width / this.horizontalFrames) * this.xFrame,
+        (this.img.height / this.verticalFrames) * this.yFrame,
+        this.img.width / this.horizontalFrames,
+        this.img.height / this.verticalFrames,
+        this.x,
+        this.y,
+        this.width,
+        this.height
+      );
+      this.tick++;
     }
   }
 
   move() {
     this.x += this.speed;
 
-    if (this.x + this.ctx.canvas.width <= 0) {
-      this.x = 0;
+    // if (this.x + this.ctx.canvas.width <= 0) {
+    //   this.x = 0;
+    if (this.tick % 10 === 0) {
+      this.xFrame += 1;
+    }
+
+    if (this.xFrame > 1) {
+      this.xFrame = 0;
     }
   }
 }

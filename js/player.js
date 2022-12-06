@@ -1,12 +1,15 @@
 class Player {
-  constructor(ctx, x, y) {
+  constructor(ctx, x, y, height) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
-    this.width = 70;
-    this.height = 40;
+    this.height = height;
+    
+
     this.sizeX = this.width;
     this.sizeY = this.height;
+
+    this.width = 0
 
     this.horizontalFrames = 3;
     this.verticalFrames = 1;
@@ -14,10 +17,11 @@ class Player {
     this.yFrame = 0;
 
     this.img = new Image();
-    this.img.src = "./images/YellowFish.png";
+    this.img.src = "./images/L00_PLYR_goldfish.png";
     this.isReady = false;
     this.img.onload = () => {
       this.isReady = true;
+      this.width = ((this.height * this.img.width) / this.img.height)/this.horizontalFrames;
     };
 
     this.gravity = 0.05;
@@ -28,7 +32,7 @@ class Player {
       down: false,
     };
 
-   this.level = 0;
+   this.level = 0
    
     this.tick = 0;
   }
@@ -93,7 +97,7 @@ class Player {
   }
 
   isColliding(obj) {
-    const threshold = 10
+    const threshold = 25
     return (
       this.x + threshold< obj.x + obj.width &&
       this.x + this.width > obj.x + threshold &&
