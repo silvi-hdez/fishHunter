@@ -63,7 +63,7 @@ class Life {
         this.horizontalFrames;
     };
 
-    this.speed = -3;
+    this.speed = 3;
     this.score = this.types[this.type].score;
     this.tick = 0;
   }
@@ -86,7 +86,7 @@ class Life {
   }
 
   move() {
-    this.x += this.speed;
+    this.y += this.speed;
 
     if (this.tick % 10 === 0) {
       this.xFrame += 1;

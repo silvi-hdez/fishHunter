@@ -37,10 +37,10 @@ class Game {
   }
 
   addLife() {
-    const randomY = Math.random() * (this.canvas.height - 50);
+    const randomY = Math.random() * (-50-0) ;
     const randomType = Math.floor(Math.random() * 6);
     const randomX =
-      Math.random() * (1200 - this.canvas.width) + this.canvas.width;
+      Math.random() * 950;
 
     this.lives.push(new Life(this.ctx, randomX, randomY, 40, randomType));
   }
