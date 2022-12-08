@@ -28,10 +28,13 @@ class Player {
 
     this.gravity = 0.05;
     this.vy = 0;
+    this.vx = 0
 
     this.movements = {
       up: false,
       down: false,
+      right: false,
+      left: false
     };
 
     this.level = 0;
@@ -60,6 +63,9 @@ class Player {
     this.vy += this.gravity;
     this.y += this.vy;
 
+  
+    this.x += this.vx;
+
     if (this.tick % 10 === 0) {
       this.xFrame += 1;
     }
@@ -77,6 +83,15 @@ class Player {
     if (this.y <= 0) {
       this.y = 0;
     }
+    
+    if (this.x > this.ctx.canvas.width - this.width) {
+      this.x = this.ctx.canvas.width - this.width;
+    }
+
+    if (this.x <= 0) {
+      this.x = 0;
+    }
+    
   }
 
   //--Controladores----
@@ -91,6 +106,14 @@ class Player {
       this.movements.down = true;
       this.vy = 3;
     }
+    if (e.keyCode === 39) {
+      this.movements.right = true;
+      this.vx += 2;
+    }
+    if (e.keyCode === 37) {
+      this.movements.left = true;
+      this.vx -= 1;
+    }
   }
 
   onKeyUp(e) {
@@ -99,6 +122,12 @@ class Player {
     }
     if (e.keyCode === 40) {
       this.movements.down = false;
+    }
+    if (e.keyCode === 39) {
+      this.movements.right = false;
+    }
+    if (e.keyCode === 37) {
+      this.movements.left = false;
     }
   }
 

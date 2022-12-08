@@ -48,6 +48,20 @@ canvas {
 
 }
 
+#finish-game {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	align-items: center;
+	display: none;
+}
+
+#finish-tittle{
+	height: 200px;
+	margin-top: 170px;
+
+}
+
 #start-btn{
 	margin: 10px 5px;
 	font-size: 16px;

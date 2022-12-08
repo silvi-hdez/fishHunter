@@ -14,7 +14,14 @@ class Game {
     this.tick = 0;
     this.level = 0;
     //scorebar aún no funciona
-   // this.scorebar = new ScoreBar(this.ctx);
+    //this.scorebar = new ScoreBar(this.ctx);
+
+    //--music--
+    this.sound = new Audio('./sounds/stranger-things_playgame.mp3');
+		this.sound.volume = 0.3;
+		this.eatsound = new Audio('./sounds/bubble_effect.m4a');
+		this.gameoverSound = new Audio('./sounds/gameover_effect.wav'); 
+    this.winnerSound = new Audio('./sounds/winner_effect.mp3');  
   }
 
   //--Añadir enemigos y vidas----
@@ -35,11 +42,12 @@ class Game {
     const randomX =
       Math.random() * (1200 - this.canvas.width) + this.canvas.width;
 
-    this.lives.push(new Life(this.ctx, randomX, randomY, 40,randomType));
+    this.lives.push(new Life(this.ctx, randomX, randomY, 40, randomType));
   }
 
   //--Comienzo juego----
   start() {
+    this.sound.play()
     this.intervalId = setInterval(() => {
       this.clear();
       this.draw();
@@ -68,8 +76,7 @@ class Game {
     this.enemies.forEach((enemy) => enemy.draw());
     this.lives.forEach((life) => life.draw());
     this.drawLevel ()
-    // this.scorebar.draw(this.player.level, this.score);
-   // this.drawScore();
+   // this.scorebar.draw();
   }
 
   //--Movimientos elementos----
@@ -102,6 +109,8 @@ class Game {
         this.enemies.splice(this.enemies.indexOf(collidingEnemy), 1);
         this.levelUp(collidingEnemy);
       }
+      this.eatsound.currentTime = 0;
+			this.eatsound.play();
     }
 
     const lifeCollision = this.lives.find((life) =>
@@ -111,6 +120,8 @@ class Game {
     if (lifeCollision) {
       this.lives.splice(this.lives.indexOf(lifeCollision), 1);
       this.levelUp(lifeCollision);
+      this.eatsound.currentTime = 0;
+			this.eatsound.play();
     }
   }
 
@@ -119,15 +130,18 @@ class Game {
   levelUp(fish) {
     this.score += fish.score;
     if (this.score >= this.scoreLimit) {
-        this.scoreLimit = this.scoreLimit + 3;
-        this.player.level += 1;
-        // if (fish.level > 0) {
-        //     this.player.img.src = fish.playerImageSrc;
-        // } else if (this.player.level <= 1) {
-        //     this.player.img.src = "./images/goldfishes.png";
-        //     this.player.level += 1;
-        // }
+      this.scoreLimit = this.scoreLimit + 3;
+      this.player.level += 1;
+      // if (fish.level > 0) {
+      //     this.player.img.src = fish.playerImageSrc;
+      // } else if (this.player.level <= 1) {
+      //     this.player.img.src = "./images/goldfishes.png";
+      //     this.player.level += 1;
+      // }
     }
+    if ( this.player.level === 2) {
+      this.endGame()
+   }
   }
   //--Fin juego----
 
@@ -140,14 +154,30 @@ class Game {
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     document.getElementById("skip-btn").style.display = "none";
+    this.sound.pause()
+    this.gameoverSound.play();
   }
 
   //--Barra puntuación----
 
-  drawLevel () {
+  drawLevel() {
     this.ctx.fillStyle = "red";
     this.ctx.font = "24px Arial";
-    this.ctx.fillText("Level: " + this.player.level, 400, 30);
+    this.ctx.fillText("Level: " + this.player.level + "/11", 300, 30);
     this.ctx.fillText("Score: " + this.score, 500, 30);
-}
+  }
+
+  //--Fin juego----
+  endGame (){
+    clearInterval(this.intervalId);
+
+    this.ctx.save();
+    document.getElementById("finish-game").style.display = "flex";
+    this.isEndGame = true;
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    document.getElementById("skip-btn").style.display = "none";
+    this.sound.pause()
+    this.winnerSound.play();
+  }
 }
