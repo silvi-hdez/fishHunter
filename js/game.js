@@ -27,16 +27,72 @@ class Game {
   //--Añadir enemigos y vidas----
 
   addEnemy() {
+
     const randomY = Math.random() * (this.canvas.height - 80);
-    const randomType = Math.floor(Math.random() * 5);
+  // const randomType = Math.floor(Math.random() * 3);
 
     const randomX =
       Math.random() * (1200 - this.canvas.width) + this.canvas.width;
+  
+      if (this.player.level === 0) {
+        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Clownfish'));
+        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Angelfish'));
+        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
+     }
+     
+     if (this.player.level === 1) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Angelfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
+      this.enemies.speed = -2.5
+     }
 
-    this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, randomType));
+     if (this.player.level === 2) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
+      this.enemies.speed = -3
+     }
+
+     if (this.player.level === 3) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
+      this.enemies.speed = -3.5
+     }
+
+     if (this.player.level === 4) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
+      this.enemies.speed = -4
+     }
+
+     if (this.player.level === 5) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
+      this.enemies.speed = -4.5
+     }
+
+     if (this.player.level === 6) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swordfish'));
+      this.enemies.speed = -5
+     }
+
+     if (this.player.level === 7) {
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swordfish'));
+      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Shark'));
+      this.enemies.speed = -5.5
+     }
+
   }
 
   addLife() {
+
     const randomY = Math.random() * (-50-0) ;
     const randomType = Math.floor(Math.random() * 6);
     const randomX =
@@ -56,8 +112,8 @@ class Game {
 
       this.tick++;
       if (this.tick % 90 === 0) {
-        this.addEnemy();
         this.addLife();
+        this.addEnemy();
         this.tick = 0;
       }
     }, 1000 / 60);
@@ -103,15 +159,10 @@ class Game {
       this.player.isColliding(enemy)
     );
     if (collidingEnemy) {
-      if (collidingEnemy.level > this.player.level) {
         this.gameOver();
-      } else if (collidingEnemy.level < this.player.level) {
-        this.enemies.splice(this.enemies.indexOf(collidingEnemy), 1);
-        this.levelUp(collidingEnemy);
-      }
-      this.eatsound.currentTime = 0;
-			this.eatsound.play();
-    }
+      } 
+      
+    
 
     const lifeCollision = this.lives.find((life) =>
       this.player.isColliding(life)
@@ -132,14 +183,9 @@ class Game {
     if (this.score >= this.scoreLimit) {
       this.scoreLimit = this.scoreLimit + 3;
       this.player.level += 1;
-      // if (fish.level > 0) {
-      //     this.player.img.src = fish.playerImageSrc;
-      // } else if (this.player.level <= 1) {
-      //     this.player.img.src = "./images/goldfishes.png";
-      //     this.player.level += 1;
-      // }
+  
     }
-    if ( this.player.level === 2) {
+    if ( this.player.level === 8) {
       this.endGame()
    }
   }
@@ -167,7 +213,7 @@ class Game {
     this.ctx.fillText("Score: " + this.score, 500, 30);
   }
 
-  //--Fin juego----
+  //--Pantalla fin juego----
   endGame (){
     clearInterval(this.intervalId);
 

@@ -69,6 +69,7 @@ class Life {
   }
 
   draw() {
+   
     if (this.isReady) {
       this.ctx.drawImage(
         this.img,
