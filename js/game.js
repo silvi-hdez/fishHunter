@@ -17,10 +17,11 @@ class Game {
     //this.scorebar = new ScoreBar(this.ctx);
 
     //--music--
-    this.sound = new Audio('./sounds/stranger-things_playgame.mp3');
+   
+    this.sound = new Audio('./sounds/I_Like_Big_Bass.m4a');
 		this.sound.volume = 0.3;
 		this.eatsound = new Audio('./sounds/bubble_effect.m4a');
-		this.gameoverSound = new Audio('./sounds/gameover_effect.wav'); 
+		this.gameoverSound = new Audio('./sounds/gameover_effect.mp3'); 
     this.winnerSound = new Audio('./sounds/winner_effect.mp3');  
   }
 
@@ -28,65 +29,62 @@ class Game {
 
   addEnemy() {
 
-    const randomY = Math.random() * (this.canvas.height - 80);
-  // const randomType = Math.floor(Math.random() * 3);
-
-    const randomX =
-      Math.random() * (1200 - this.canvas.width) + this.canvas.width;
+    const randomY = () => Math.random() * (this.canvas.height - 80);
+    const randomX = () => Math.random() * (1200 - this.canvas.width) + this.canvas.width;
   
       if (this.player.level === 0) {
-        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Clownfish'));
-        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Angelfish'));
-        this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
-     }
+        const randomIndex = Math.floor(Math.random() * 3);
+        const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+        this.enemies.push(enemyToAdd);
+      }
      
      if (this.player.level === 1) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Angelfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
-      this.enemies.speed = -2.5
+      const randomIndex = Math.floor(Math.random() * (4 - 1) + 1);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -5
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 2) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Cardinalfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
-      this.enemies.speed = -3
+      const randomIndex = Math.floor(Math.random() * (5 - 3) + 2);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -6
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 3) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Lionfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
-      this.enemies.speed = -3.5
+      const randomIndex = Math.floor(Math.random() * (6 - 3) + 3);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -7
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 4) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swellfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
-      this.enemies.speed = -4
+      const randomIndex = Math.floor(Math.random() * (7 - 4) + 4);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -8
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 5) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Basslet'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
-      this.enemies.speed = -4.5
+      const randomIndex = Math.floor(Math.random() * (8 - 5) + 5);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -9
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 6) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Barracuda'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swordfish'));
-      this.enemies.speed = -5
+      const randomIndex = Math.floor(Math.random() * (9 - 6) + 6);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -10
+      this.enemies.push(enemyToAdd);
      }
 
      if (this.player.level === 7) {
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Raya'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Swordfish'));
-      this.enemies.push(new Enemy(this.ctx, randomX, randomY, 80, 'Shark'));
-      this.enemies.speed = -5.5
+      const randomIndex = Math.floor(Math.random() * (10 - 7) + 7);
+      const enemyToAdd = new Enemy(this.ctx, randomX(), randomY(), 80, randomIndex);
+      enemyToAdd.speed = -11
+      this.enemies.push(enemyToAdd);
      }
 
   }
@@ -181,7 +179,7 @@ class Game {
   levelUp(fish) {
     this.score += fish.score;
     if (this.score >= this.scoreLimit) {
-      this.scoreLimit = this.scoreLimit + 3;
+      this.scoreLimit = this.scoreLimit + 2;
       this.player.level += 1;
   
     }
@@ -200,8 +198,8 @@ class Game {
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     document.getElementById("skip-btn").style.display = "none";
-    this.sound.pause()
     this.gameoverSound.play();
+    this.sound.pause()
   }
 
   //--Barra puntuación----
