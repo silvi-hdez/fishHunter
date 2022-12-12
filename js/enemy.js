@@ -1,11 +1,10 @@
 class Enemy {
-  constructor(ctx, x, y, height, typeIndex) {
+  constructor(ctx, x, y, height, imgSrc) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = 0;
-    this.typeIndex = typeIndex;
 
     this.horizontalFrames = 3;
     this.verticalFrames = 1;
@@ -13,21 +12,7 @@ class Enemy {
     this.yFrame = 0;
 
     this.img = new Image();
-    this.imageSrc = [
-      "./images/L01_clown.png",
-      "./images/L02_angelfish.png",
-      "./images/L03_cardinal.png",
-      "./images/L04_lionfish.png",
-      "./images/L05_swellfish.png",
-      "./images/L06__basslets.png",
-      "./images/L07_barracuda.png",
-      "./images/L08_raya.png",
-      "./images/L09_swordfish.png",
-      "./images/L10_shark.png",
-    ];
-
-  
-    this.img.src = this.imageSrc[this.typeIndex]
+    this.img.src = imgSrc
  
     this.isReady = false;
     this.img.onload = () => {
