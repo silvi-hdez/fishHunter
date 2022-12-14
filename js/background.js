@@ -1,23 +1,25 @@
 class Background {
-    constructor(ctx) {
+    constructor(ctx, src, speed) {
         this.ctx = ctx
         this.x = 0
         this.y = 0
         this.width = this.ctx.canvas.width
         this.height = this.ctx.canvas.height
+        this.src = src
+        this.speed = speed
 
         this.image = new Image()
-        this.image.src = './images/seabed-bg.jpg'
+        this.image.src = this.src
         this.isReady = false
         this.image.onload = () => {
         this.isReady = true
         }
 
-        this.speed = -3
     }
 
     draw () {
         if (this.isReady) {
+            this.ctx.drawImage (this.image, this.x - this.ctx.canvas.width, this.y, this.width, this.height)
             this.ctx.drawImage (this.image, this.x, this.y, this.width, this.height)
             this.ctx.drawImage (this.image, this.x + this.ctx.canvas.width, this.y, this.width, this.height)
         }

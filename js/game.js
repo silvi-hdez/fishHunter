@@ -3,7 +3,8 @@ class Game {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
 
-    this.bg = new Background(this.ctx);
+    this.bg = new Background(this.ctx, './images/seabed-bg.jpg', -3);
+   // this.fishbg = new Background(this.ctx, './images/wallpaper/Bluefishes.png', 0.5);
     this.player = new Player(this.ctx, 300, 200, 80);
     this.enemies = [];
 
@@ -19,6 +20,7 @@ class Game {
       new ScoreBar(this.ctx, 180),
       new ScoreBar(this.ctx, 215),
     ];
+    this.extraLife = null;
 
     //--music--
 
@@ -318,6 +320,8 @@ class Game {
         this.addEnemy();
         this.tick = 0;
       }
+
+      this.addExtraLife();
     }, 1000 / 60);
   }
 
@@ -330,6 +334,7 @@ class Game {
   //--Lo que entra en pantalla----
   draw() {
     this.bg.draw();
+   //this.fishbg.draw()
     this.player.draw();
     this.enemies.forEach((enemy) => enemy.draw());
     this.lives.forEach((life) => life.draw());
@@ -338,12 +343,17 @@ class Game {
       life.draw();
     });
     this.drawPossibleEnemies();
-    this.drawPossibleLives()
+    this.drawPossibleLives();
+   // this.drawIronLife();
+   // if (this.extraLife) {
+    //   this.extraLife.draw();
+    // }
   }
 
   //--Movimientos elementos----
   move() {
     this.bg.move();
+   // this.fishbg.move()
     this.player.move();
     this.enemies.forEach((enemy) => enemy.move());
     this.lives.forEach((life) => life.move());
@@ -367,15 +377,21 @@ class Game {
     );
 
     if (collidingEnemy) {
-     
+      this.player.receivingDamage = true;
+      setTimeout(() => {
+        this.player.receivingDamage = false;
+      }, 500)
+
       this.enemies.splice(this.enemies.indexOf(collidingEnemy), 1);
       this.failFish.currentTime = 0;
       this.failFish.play ()
       this.player.life--;
       this.scorebar.pop();
+
+     
     }
 
-    if (collidingEnemy && this.player.life <= 0) {
+    if (this.player.life <= 0) {
       this.gameOver();
     }
 
@@ -391,9 +407,47 @@ class Game {
       this.eatsound.play();
     }
 
-    if (this.player.x <= 0) {
+        //--Con límites----
+
+    if (this.player.x <= 0 && 
+      !this.player.receivingDamage) {
       this.player.life--;
       this.scorebar.pop();
+      this.player.receivingDamage = true;
+
+      setTimeout(() => {
+        this.player.receivingDamage = false;
+      }, 1000)
+    }
+    if (this.player.x >= this.canvas.width-this.player.width && 
+      !this.player.receivingDamage) {
+      this.player.life--;
+      this.scorebar.pop();
+      this.player.receivingDamage = true;
+
+      setTimeout(() => {
+        this.player.receivingDamage = false;
+      }, 1000)
+    }
+    if (this.player.y <= 0 && 
+      !this.player.receivingDamage) {
+      this.player.life--;
+      this.scorebar.pop();
+      this.player.receivingDamage = true;
+
+      setTimeout(() => {
+        this.player.receivingDamage = false;
+      }, 1000)
+    }
+    if (this.player.y >= this.canvas.height - this.player.height && 
+      !this.player.receivingDamage) {
+      this.player.life--;
+      this.scorebar.pop();
+      this.player.receivingDamage = true;
+
+      setTimeout(() => {
+        this.player.receivingDamage = false;
+      }, 1000)
     }
   }
 
@@ -475,5 +529,18 @@ class Game {
     this.ctx.drawImage(img1, 0, 0, img1.width / 3, img1.height, 495, 40, 30, 30);
     this.ctx.drawImage(img2, 0, 0, img2.width / 3, img2.height, 530, 40, 30, 30);
     this.ctx.drawImage(img3, 0, 0, img3.width / 3, img3.height, 565, 40, 30, 30);
+  }
+
+  addExtraLife(){
+    // if (this.player.life < 3 && !this.extraLife) {
+    //   this.extraLife = new ExtraLife();
+    // }
+
+    // const randomY = () => Math.random() * this.canvas.height;
+    // const randomX = () =>
+    //   Math.random() * this.canvas.width;
+    // const img = new Image ();
+    // img.src = './images/ironhack_logonegro.png';
+    // this.ctx.drawImage(img, randomX(), randomY(), 40, 40)
   }
 }

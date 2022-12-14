@@ -25,6 +25,8 @@ class Player {
         this.img.height /
         this.horizontalFrames;
     };
+    this.imgCollision = new Image();
+   this.imgCollision.src = "./images/L00_PLYR_goldfish_collision.png";
 
     this.gravity = 0.05;
     this.speed = 0.05;
@@ -42,6 +44,8 @@ class Player {
     this.life = 3;
 
     this.tick = 0;
+
+    this.receivingDamage = false;
   }
 
   draw() {
@@ -57,6 +61,19 @@ class Player {
         this.width,
         this.height
       );
+      if (this.receivingDamage) {
+        this.ctx.drawImage(
+          this.imgCollision,
+          (this.img.width / this.horizontalFrames) * this.xFrame,
+          (this.img.height / this.verticalFrames) * this.yFrame,
+          this.img.width / this.horizontalFrames,
+          this.img.height / this.verticalFrames,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        );
+      }
       this.tick++;
     }
   }
