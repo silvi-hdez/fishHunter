@@ -3,17 +3,16 @@ class Game {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
 
-    this.bg = new Background(this.ctx, './images/seabed-bg.jpg', -3);
-   // this.fishbg = new Background(this.ctx, './images/wallpaper/Bluefishes.png', 0.5);
+    this.bg = new Background(this.ctx, "./images/seabed-bg.jpg", -3);
     this.player = new Player(this.ctx, 300, 200, 80);
     this.enemies = [];
 
     this.lives = [];
 
     this.score = 0;
-    this.scoreLimit = 3;
+    this.scoreLimit = 5;
+    this.totalScore = 0;
     this.tick = 0;
-    this.level = 0;
 
     this.scorebar = [
       new ScoreBar(this.ctx, 145),
@@ -26,10 +25,11 @@ class Game {
 
     this.sound = new Audio("./sounds/I_Like_Big_Bass.m4a");
     this.sound.volume = 0.3;
+    this.sound.loop = true;
     this.eatsound = new Audio("./sounds/bubble_effect.m4a");
     this.gameoverSound = new Audio("./sounds/gameover_effect.mp3");
     this.winnerSound = new Audio("./sounds/winner_effect.mp3");
-    this.failFish = new Audio ("./sounds/wrong-fish.mp3");
+    this.failFish = new Audio("./sounds/wrong-fish.mp3");
 
     this.enemiesImgs = [
       "./images/L01_clown.png",
@@ -199,7 +199,7 @@ class Game {
     }
   }
 
-//--Añadir vidas ----
+  //--Añadir vidas ----
 
   addLife() {
     const randomY = () => Math.random() * (-50 - 0);
@@ -253,6 +253,7 @@ class Game {
         40,
         this.livesImgs[randomIndex].img
       );
+      lifeToAdd.score = this.livesImgs[randomIndex].score;
       this.lives.push(lifeToAdd);
     }
 
@@ -265,6 +266,7 @@ class Game {
         40,
         this.livesImgs[randomIndex].img
       );
+      lifeToAdd.score = this.livesImgs[randomIndex].score;
       this.lives.push(lifeToAdd);
     }
 
@@ -277,6 +279,7 @@ class Game {
         40,
         this.livesImgs[randomIndex].img
       );
+      lifeToAdd.score = this.livesImgs[randomIndex].score;
       this.lives.push(lifeToAdd);
     }
 
@@ -289,6 +292,7 @@ class Game {
         40,
         this.livesImgs[randomIndex].img
       );
+      lifeToAdd.score = this.livesImgs[randomIndex].score;
       this.lives.push(lifeToAdd);
     }
 
@@ -301,6 +305,7 @@ class Game {
         40,
         this.livesImgs[randomIndex].img
       );
+      lifeToAdd.score = this.livesImgs[randomIndex].score;
       this.lives.push(lifeToAdd);
     }
   }
@@ -334,7 +339,6 @@ class Game {
   //--Lo que entra en pantalla----
   draw() {
     this.bg.draw();
-   //this.fishbg.draw()
     this.player.draw();
     this.enemies.forEach((enemy) => enemy.draw());
     this.lives.forEach((life) => life.draw());
@@ -344,19 +348,23 @@ class Game {
     });
     this.drawPossibleEnemies();
     this.drawPossibleLives();
-   // this.drawIronLife();
-   // if (this.extraLife) {
-    //   this.extraLife.draw();
-    // }
+
+    if (this.extraLife) {
+      this.extraLife.draw();
+    }
+
+    this.drawHealth();
   }
 
   //--Movimientos elementos----
   move() {
     this.bg.move();
-   // this.fishbg.move()
     this.player.move();
     this.enemies.forEach((enemy) => enemy.move());
     this.lives.forEach((life) => life.move());
+    if (this.extraLife) {
+      this.extraLife.move();
+    }
   }
 
   //--Controladores----
@@ -370,8 +378,26 @@ class Game {
 
   // --Colisiones----
 
-  //--Con enemigo----
   checkCollisions() {
+    //--Con extralife----
+
+    const collidingExtraLife =
+      this.extraLife && this.player.isColliding(this.extraLife);
+
+    if (collidingExtraLife && this.player.life < 3) {
+      this.extraLife = null;
+      this.player.life++;
+
+      this.scorebar.push(
+        new ScoreBar(this.ctx, this.scorebar[this.scorebar.length - 1].x + 35)
+      );
+    }
+
+    this.eatsound.currentTime = 0;
+    this.eatsound.play();
+
+    //--Con enemigo----
+
     const collidingEnemy = this.enemies.find((enemy) =>
       this.player.isColliding(enemy)
     );
@@ -380,15 +406,13 @@ class Game {
       this.player.receivingDamage = true;
       setTimeout(() => {
         this.player.receivingDamage = false;
-      }, 500)
+      }, 500);
 
       this.enemies.splice(this.enemies.indexOf(collidingEnemy), 1);
       this.failFish.currentTime = 0;
-      this.failFish.play ()
+      this.failFish.play();
       this.player.life--;
       this.scorebar.pop();
-
-     
     }
 
     if (this.player.life <= 0) {
@@ -407,59 +431,68 @@ class Game {
       this.eatsound.play();
     }
 
-        //--Con límites----
+    //--Con límites----
 
-    if (this.player.x <= 0 && 
-      !this.player.receivingDamage) {
+    if (this.player.x <= 0 && !this.player.receivingDamage) {
+      this.failFish.currentTime = 0;
+      this.failFish.play();
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
 
       setTimeout(() => {
         this.player.receivingDamage = false;
-      }, 1000)
+      }, 1000);
     }
-    if (this.player.x >= this.canvas.width-this.player.width && 
-      !this.player.receivingDamage) {
+    if (
+      this.player.x >= this.canvas.width - this.player.width &&
+      !this.player.receivingDamage
+    ) {
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
 
       setTimeout(() => {
         this.player.receivingDamage = false;
-      }, 1000)
+      }, 1000);
     }
-    if (this.player.y <= 0 && 
-      !this.player.receivingDamage) {
+    if (this.player.y <= 0 && !this.player.receivingDamage) {
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
 
       setTimeout(() => {
         this.player.receivingDamage = false;
-      }, 1000)
+      }, 1000);
     }
-    if (this.player.y >= this.canvas.height - this.player.height && 
-      !this.player.receivingDamage) {
+    if (
+      this.player.y >= this.canvas.height - this.player.height &&
+      !this.player.receivingDamage
+    ) {
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
 
       setTimeout(() => {
         this.player.receivingDamage = false;
-      }, 1000)
+      }, 1000);
     }
   }
 
   //--Subir nivel---
 
   levelUp(fish) {
+    console.log("entro", fish.score, this.score, this.totalScore);
     this.score += fish.score;
+    this.totalScore += fish.score;
     if (this.score >= this.scoreLimit) {
-      this.scoreLimit = this.scoreLimit + 1;
+      this.score = 0;
+      this.scoreLimit = this.scoreLimit * 2;
       this.player.level += 1;
+      this.player.height = this.player.height * 1.15;
+      this.player.width = this.player.width * 1.15;
     }
-    if (this.player.level === 7) {
+    if (this.player.level === 8) {
       this.endGame();
     }
   }
@@ -482,10 +515,10 @@ class Game {
 
   drawLevel() {
     this.ctx.fillStyle = "red";
-    this.ctx.font = "24px Arial";
+    this.ctx.font = "24px Comic";
     this.ctx.fillText("lives: " + this.player.life + "/3", 150, 30);
     this.ctx.fillText("Level: " + this.player.level + "/7", 300, 30);
-    this.ctx.fillText("Score: " + this.score, 500, 30);
+    this.ctx.fillText("Score: " + this.totalScore, 500, 30);
     this.ctx.fillText("BE CAREFUL!", 700, 30);
   }
 
@@ -513,9 +546,39 @@ class Game {
     const img3 = new Image();
     img3.src = this.enemiesImgs[this.player.level + 2];
 
-    this.ctx.drawImage( img1, 0, 0, img1.width / 3, img1.height, 700, 40, 50, 50);
-    this.ctx.drawImage( img2, 0, 0, img2.width / 3, img2.height, 755, 40, 50, 50);
-    this.ctx.drawImage( img3, 0, 0, img3.width / 3, img3.height, 805, 40, 50, 50);
+    this.ctx.drawImage(
+      img1,
+      0,
+      0,
+      img1.width / 3,
+      img1.height,
+      700,
+      40,
+      50,
+      50
+    );
+    this.ctx.drawImage(
+      img2,
+      0,
+      0,
+      img2.width / 3,
+      img2.height,
+      755,
+      40,
+      50,
+      50
+    );
+    this.ctx.drawImage(
+      img3,
+      0,
+      0,
+      img3.width / 3,
+      img3.height,
+      805,
+      40,
+      50,
+      50
+    );
   }
 
   drawPossibleLives() {
@@ -526,21 +589,58 @@ class Game {
     const img3 = new Image();
     img3.src = this.livesImgs[this.player.level + 2].img;
 
-    this.ctx.drawImage(img1, 0, 0, img1.width / 3, img1.height, 495, 40, 30, 30);
-    this.ctx.drawImage(img2, 0, 0, img2.width / 3, img2.height, 530, 40, 30, 30);
-    this.ctx.drawImage(img3, 0, 0, img3.width / 3, img3.height, 565, 40, 30, 30);
+    this.ctx.drawImage(
+      img1,
+      0,
+      0,
+      img1.width / 3,
+      img1.height,
+      495,
+      40,
+      30,
+      30
+    );
+    this.ctx.drawImage(
+      img2,
+      0,
+      0,
+      img2.width / 3,
+      img2.height,
+      530,
+      40,
+      30,
+      30
+    );
+    this.ctx.drawImage(
+      img3,
+      0,
+      0,
+      img3.width / 3,
+      img3.height,
+      565,
+      40,
+      30,
+      30
+    );
   }
 
-  addExtraLife(){
-    // if (this.player.life < 3 && !this.extraLife) {
-    //   this.extraLife = new ExtraLife();
-    // }
+  addExtraLife() {
+    if (this.player.life < 3 && !this.extraLife) {
+      const randomY = Math.random() * (-50 - 0);
+      const randomX = Math.random() * 950;
+      this.extraLife = new ExtraLife(this.ctx, randomX, randomY);
+      setTimeout(() => {
+        this.extraLife = null;
+      }, 10000);
+    }
+  }
 
-    // const randomY = () => Math.random() * this.canvas.height;
-    // const randomX = () =>
-    //   Math.random() * this.canvas.width;
-    // const img = new Image ();
-    // img.src = './images/ironhack_logonegro.png';
-    // this.ctx.drawImage(img, randomX(), randomY(), 40, 40)
+  drawHealth() {
+    const score = this.score;
+    let color = "green";
+
+    this.ctx.fillStyle = color;
+    this.ctx.strokeRect(280, 50, 140, 20);
+    this.ctx.fillRect(280, 50, (score * 140) / this.scoreLimit, 20);
   }
 }
