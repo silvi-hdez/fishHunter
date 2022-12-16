@@ -28,8 +28,10 @@ class Game {
     this.sound.loop = true;
     this.eatsound = new Audio("./sounds/bubble_effect.m4a");
     this.gameoverSound = new Audio("./sounds/gameover_effect.mp3");
-    this.winnerSound = new Audio("./sounds/winner_effect.mp3");
+    this.winnerSound = new Audio("./sounds/aplausos.mp3");
     this.failFish = new Audio("./sounds/wrong-fish.mp3");
+    this.ironSound = new Audio("./sounds/iron_life.mp3");
+    this.wallSound = new Audio("./sounds/error.mp3");
 
     this.enemiesImgs = [
       "./images/L01_clown.png",
@@ -104,7 +106,11 @@ class Game {
         80,
         this.enemiesImgs[randomIndex]
       );
-      this.enemies.push(enemyToAdd);
+      //this.enemies.push(enemyToAdd);
+
+      setTimeout(() => {
+        this.enemies.push(enemyToAdd);
+      }, 500);
     }
 
     if (this.player.level === 1) {
@@ -387,14 +393,13 @@ class Game {
     if (collidingExtraLife && this.player.life < 3) {
       this.extraLife = null;
       this.player.life++;
+      this.ironSound.currentTime = 0;
+      this.ironSound.play();
 
       this.scorebar.push(
         new ScoreBar(this.ctx, this.scorebar[this.scorebar.length - 1].x + 35)
       );
     }
-
-    this.eatsound.currentTime = 0;
-    this.eatsound.play();
 
     //--Con enemigo----
 
@@ -434,8 +439,8 @@ class Game {
     //--Con límites----
 
     if (this.player.x <= 0 && !this.player.receivingDamage) {
-      this.failFish.currentTime = 0;
-      this.failFish.play();
+      this.wallSound.currentTime = 0;
+      this.wallSound.play();
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
@@ -448,6 +453,8 @@ class Game {
       this.player.x >= this.canvas.width - this.player.width &&
       !this.player.receivingDamage
     ) {
+      this.wallSound.currentTime = 0;
+      this.wallSound.play();
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
@@ -457,6 +464,8 @@ class Game {
       }, 1000);
     }
     if (this.player.y <= 0 && !this.player.receivingDamage) {
+      this.wallSound.currentTime = 0;
+      this.wallSound.play();
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;
@@ -469,6 +478,8 @@ class Game {
       this.player.y >= this.canvas.height - this.player.height &&
       !this.player.receivingDamage
     ) {
+      this.wallSound.currentTime = 0;
+      this.wallSound.play();
       this.player.life--;
       this.scorebar.pop();
       this.player.receivingDamage = true;

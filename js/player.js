@@ -40,7 +40,7 @@ class Player {
       left: false,
     };
 
-    this.level = 3;
+    this.level = 0;
     this.life = 3;
 
     this.tick = 0;
